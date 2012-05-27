@@ -4,17 +4,18 @@ import os
 from tripy.utils.path import Path
 from tifl.md import convert
 import settings as s
-
+from router import HashedRouter
 
 app = Flask(__name__)
 
+router = HashedRouter()
+
 @app.route('/page/<filename>')
 def _show_post(filename):
-    filename = Path(s.WEB_BASE).abspath() / filename
 
     try:
         print "fetching %s" % filename
-        mdText = convert.convertFile(filename, webBase=s.WEB_BASE, wikiLinkBase="page")
+        mdText = router.route("pages/" + filename)
     except ValueError, ve:
         return markdown.markdown("# An error has occurred\n%s" % str(ve))
 
