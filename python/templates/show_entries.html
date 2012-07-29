@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class=body>
+    {% for entry in entries %}
+    <div class=section>
+        <span class=date>{{ entry.created }}</span>
+        <h2>{{ entry.title }}</h2>
+        <div class=metadata>in <a href="http://google.com">UNCATEGORIZED</a> by <a href="http://google.com">{{ entry.author }}</a></div><br>
+        <hr>
+        {{ entry.html|safe }}
+    </div>
+    {% else %}
+        <em>Unbelievable.  No entries here so far</em>
+    {% endfor %}
+</div>
+{% endblock %}

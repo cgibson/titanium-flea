@@ -1,0 +1,18 @@
+<!doctype html>
+<title>{{ config.SITE_NAME }} - View Entries</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/code/custom.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<div class=page>
+  <h1>{{ config.SITE_NAME }}</h1>
+  <div class=subtitle>{{ config.SITE_SUBTITLE }}</div>
+
+  <div class=metanav>
+  </div>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  <div class=bodywrapper>
+  {% block body %}{% endblock %}
+  </div>
+</div>

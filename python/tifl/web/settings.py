@@ -1,17 +1,20 @@
-import ConfigParser
+#import ConfigParser
 
 WEB_BASE  = "www"
 PORT      = 5000
-SITE_NAME = "Titanium Flea"
+SITE_NAME = "Mr Voxel"
+SITE_SUBTITLE = "A Dev Blog"
 DEBUG     = True
 HASH_BASE = "hash"
 WIKI_BASE = "page"
+DATABASE = "/tmp/tifl.db"
+DEFAULT_AUTHOR = "Chris"
 
+"""
 def loadSettings(cfgFiles):
     if not isinstance(cfgFiles, list):
         cfgFiles = [cfgFiles]
 
-    # TODO: add defaults
     cfgObj = ConfigParser.ConfigParser()
     cfgObj.read(cfgFiles)
 
@@ -28,3 +31,4 @@ def loadSettings(cfgFiles):
     DEBUG     = cfgObj.getboolean("general", "debug")
     HASH_BASE = cfgObj.get("general", "hash_base")
     WIKI_BASE = cfgObj.get("general", "wiki_base")
+"""
