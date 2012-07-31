@@ -42,14 +42,20 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_entries():
-    cur = g.db.execute('select id, title, html, author, created, published from entries order by id desc')
+    cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
     entries = []
     for row in cur.fetchall():
         # skip if not published
-        if not row[5]:
+        if not row[6]:
             continue
         
-        entry = dict(title=row[1], html=row[2], author=row[3], created=row[4])
+        entry = dict(title=row[1], html=row[3], author=row[4], created=row[5])
+        
+        # Build entry url
+        url = "%s/p/%s" % (s.SITE_BASE, row[2])
+        entry["url"] = url
+        
+        # Build tag list
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
         entries.append(entry)
@@ -71,6 +77,33 @@ def single_entry(urltitle):
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
         
     return render_template('single_entry.html', entry=entry)
+
+
+@app.route('/t/<tagname>')
+def tag_entries(tagname):
+    cur = g.db.execute('select e.id, e.title, e.urltitle, e.html, e.author, e.created, e.published ' +
+                       ' from entries e, tags t, tagsXentries x ' +
+                       ' where x.tagid==t.id and x.entryid=e.id and t.name==? ' +
+                       ' order by e.id desc', [tagname])
+    entries = []
+    for row in cur.fetchall():
+        # skip if not published
+        if not row[6]:
+            continue
+        
+        entry = dict(title=row[1], html=row[3], author=row[4], created=row[5])
+        
+        # Build entry url
+        url = "%s/p/%s" % (s.SITE_BASE, row[2])
+        entry["url"] = url
+        
+        # Build tag list
+        cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
+        entry["tags"] = [tag[0] for tag in cur.fetchall()]
+        entries.append(entry)
+        
+    #entries = [dict(title=row[0], html=row[1], author=row[2], created=row[3]) for row in cur.fetchall()]
+    return render_template('show_entries.html', entries=entries, selected_tag=tagname )
 
 
 

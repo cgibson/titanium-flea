@@ -23,11 +23,12 @@ body{
     font-style: italic;
 }
 
-h1 {
+h1, h1 a {
+    text-decoration: none !important;
     font-size: 48px;
     margin: 10px 0 10px 0;
     padding: 0;
-    color: #113344;
+    color: #113344 !important;
     font-weight: 400;
 }
 
@@ -52,6 +53,22 @@ h1 {
     padding: 0.1em 0.8em;
     line-height: 1.4em;
     border: 1px solid #a0a49b;
+    border-radius: 10px;
+}
+
+.selected_tag {
+    text-decoration: none;
+    text-transform: lowercase;
+    color: #ffffff !important;
+    font-weight: normal;
+    display: inline-block;
+    background-color: #5f9fee;
+    white-space: nowrap;
+    overflow: visible;
+    margin: 2px 2px 6px 0;
+    padding: 0.1em 0.8em;
+    line-height: 1.4em;
+    border: 1px solid #8f8fef;
     border-radius: 10px;
 }
 
@@ -99,9 +116,10 @@ div.body {
     padding: 0 30px 0 0px;
 }
 
-h2, h3, h4 {
-    color: #113344;
+h2, h3, h4, h2 a, h3 a, h4 a {
+    color: #113344 !important;
     font-weight: 400;
+    text-decoration: none !important;
 }
 
 p {
