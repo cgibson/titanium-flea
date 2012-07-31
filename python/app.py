@@ -5,7 +5,7 @@ import markdown
 import os
 from tripy.utils.path import Path
 from tifl.md import convert
-import tifl.web.settings as s
+import settings as s
 from contextlib import closing
 import sys
 
@@ -43,11 +43,28 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_entries():
-    cur = g.db.execute('select title, html, author, created from entries order by id desc')
-    entries = [dict(title=row[0], html=row[1], author=row[2], created=row[3]) for row in cur.fetchall()]
+    cur = g.db.execute('select id, title, html, author, created from entries order by id desc')
+    entries = []
+    for row in cur.fetchall():
+        entry = dict(title=row[1], html=row[2], author=row[3], created=row[4])
+        cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
+        entry["tags"] = [tag[0] for tag in cur.fetchall()]
+        print entry["tags"]
+        entries.append(entry)
+        
+    #entries = [dict(title=row[0], html=row[1], author=row[2], created=row[3]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
+"""
+@app.route('/page/<filename>')
+def _show_post(filename):
 
+    try:
+        print "fetching %s" % filename
+        mdText = router.route("pages/" + filename)
+    except ValueError, ve:
+        return markdown.markdown("# An error has occurred\n%s" % str(ve))
+"""
 """
 @app.route('/page/<filename>')
 def _show_post(filename):

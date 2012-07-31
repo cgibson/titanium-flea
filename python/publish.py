@@ -4,7 +4,7 @@ Created on Jul 28, 2012
 @author: cgibson
 '''
 
-import tifl.web.settings as s
+import settings as s
 import datetime, re
 import markdown
 import tifl.md.ext.mdx_mathjax as mdx_mathjax
