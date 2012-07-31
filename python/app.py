@@ -52,41 +52,27 @@ def show_entries():
         entry = dict(title=row[1], html=row[2], author=row[3], created=row[4])
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
-        print entry["tags"]
         entries.append(entry)
         
     #entries = [dict(title=row[0], html=row[1], author=row[2], created=row[3]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
-"""
-@app.route('/page/<filename>')
-def _show_post(filename):
 
-    try:
-        print "fetching %s" % filename
-        mdText = router.route("pages/" + filename)
-    except ValueError, ve:
-        return markdown.markdown("# An error has occurred\n%s" % str(ve))
-"""
-"""
-@app.route('/page/<filename>')
-def _show_post(filename):
+@app.route('/p/<urltitle>')
+def single_entry(urltitle):
 
-    try:
-        print "fetching %s" % filename
-        mdText = router.route("pages/" + filename)
-    except ValueError, ve:
-        return markdown.markdown("# An error has occurred\n%s" % str(ve))
-
-    return mdText
-"""
+    cur = g.db.execute('select id, title, html, author, created, published from entries where urltitle==?',[urltitle])
+    result = cur.fetchone()
+    if not result:
+        entry = None
+    else:
+        entry = dict(title=result[1], html=result[2], author=result[3], created=result[4])
+        cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[result[0]])
+        entry["tags"] = [tag[0] for tag in cur.fetchall()]
+        
+    return render_template('single_entry.html', entry=entry)
 
 
-"""
-def runServer(debug=False, config="web.cfg"):
-    s.loadSettings(config)
-    app.run(debug=s.DEBUG)
-"""
 
 if __name__ == '__main__':
     

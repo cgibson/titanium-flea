@@ -8,7 +8,7 @@ import settings as s
 import datetime, re
 import markdown
 import tifl.md.mdx_mathjax as mdx_mathjax
-
+import subprocess
 import argparse
 
 from sqlite3 import dbapi2 as sqlite3
@@ -143,3 +143,7 @@ if __name__ == '__main__':
     opts.post_file.close()
     
     publish(title, url_title, text, html, author=author, tags=tags, preview=preview)
+    
+    if preview:
+        url = "%s/p/%s" % (s.SITE_BASE, url_title)
+        subprocess.call(["chromium-browser", url])
