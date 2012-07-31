@@ -4,7 +4,6 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 import markdown
 import os
 from tripy.utils.path import Path
-from tifl.md import convert
 import settings as s
 from contextlib import closing
 import sys
@@ -43,9 +42,13 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_entries():
-    cur = g.db.execute('select id, title, html, author, created from entries order by id desc')
+    cur = g.db.execute('select id, title, html, author, created, published from entries order by id desc')
     entries = []
     for row in cur.fetchall():
+        # skip if not published
+        if not row[5]:
+            continue
+        
         entry = dict(title=row[1], html=row[2], author=row[3], created=row[4])
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
         entry["tags"] = [tag[0] for tag in cur.fetchall()]

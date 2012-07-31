@@ -13,6 +13,7 @@ create table entries (
   author string not null,
   created datetime not null,
   modified datetime not null,
+  published integer not null,
   unique(urltitle)
 );
 
@@ -25,7 +26,8 @@ create table categories (
 
 create table tags (
   id integer primary key autoincrement,
-  name string not null
+  name string not null,
+  unique(name)
 );
 
 create table tagsXentries (
