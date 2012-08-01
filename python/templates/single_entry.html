@@ -6,7 +6,7 @@
         <span class=date>{{ entry.created }}</span>
         <h2>{{ entry.title }}</h2>
         <div class=metadata>
-        <a href="http://blog.mrvoxel.com/p/a_post_title#disqus_thread">0 Comments</a> - 
+        <a href="{{ entry.url }}#disqus_thread">0 Comments</a> - 
         posted under 
         {% for tag in entry.tags %}
             <a class=tag href="{{ config.SITE_BASE }}/t/{{tag}}">{{ tag }}</a>

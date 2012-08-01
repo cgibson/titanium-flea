@@ -65,12 +65,16 @@ def show_entries():
 @_app.route('/p/<urltitle>')
 def single_entry(urltitle):
 
-    cur = g.db.execute('select id, title, html, author, created, published from entries where urltitle==?',[urltitle])
+    cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries where urltitle==?',[urltitle])
     result = cur.fetchone()
     if not result:
         entry = None
     else:
-        entry = dict(title=result[1], html=result[2], author=result[3], created=result[4])
+        entry = dict(title=result[1], html=result[3], author=result[4], created=result[5])
+        
+        url = "%s/p/%s" % (s.SITE_BASE, result[2])
+        entry["url"] = url
+        
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[result[0]])
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
         
