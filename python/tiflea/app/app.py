@@ -115,4 +115,4 @@ if __name__ == '__main__':
         init_db()
     else:
         print "running app."
-        _app.run()
+        _app.run(host=s.HOST_NAME, port=s.HOST_PORT, debug=s.DEBUG)
