@@ -4,10 +4,10 @@ Created on Jul 28, 2012
 @author: cgibson
 '''
 
-import settings as s
+import tiflea.app.settings as s
 import datetime, re
 import markdown
-import tifl.md.mdx_mathjax as mdx_mathjax
+import tiflea.markdown.ext.mdx_mathjax as mdx_mathjax
 import subprocess
 import argparse
 

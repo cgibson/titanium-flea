@@ -5,7 +5,8 @@
 */
 
 body{
-    font-family: Garamond, Georgia, Palatino, serif;
+    font-family: "Proxima Nova Regular","Helvetica Neue",Arial,Helvetica,sans-serif;
+    /*font-family: Garamond, Georgia, Palatino, serif;*/
     color: #444444;
     line-height: 1;
 }
@@ -123,7 +124,7 @@ h2, h3, h4, h2 a, h3 a, h4 a {
 }
 
 p {
-    line-height: 1.9em;
+    line-height: 1.5em;
 }
 
 h2, h3, h4, h5 {
