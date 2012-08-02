@@ -5,7 +5,8 @@
 */
 
 body{
-    font-family: "Proxima Nova Regular","Helvetica Neue",Arial,Helvetica,sans-serif;
+    /*font-family: "Proxima Nova Regular","Helvetica Neue",Arial,Helvetica,sans-serif;*/
+    font-family: 'Open Sans', sans-serif;
     /*font-family: Garamond, Georgia, Palatino, serif;*/
     color: #444444;
     line-height: 1;
@@ -13,6 +14,7 @@ body{
     background-repeat: repeat-x;
     background-color: #f4f4f4;
     margin: 0 8px 0 0;
+    
 }
 
 .contents {
@@ -92,6 +94,7 @@ body{
 }
 
 .title b {
+    font-weight: 800;
     /*color: #55ddcc !important;*/
 }
 
@@ -174,13 +177,10 @@ img.rightist {
 }
 
 h2, h3, h4, h2 a, h3 a, h4 a {
-    color: #113344 !important;
-    font-weight: 400;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: 600 !important;
+    color: #2a5a7a !important;
     text-decoration: none !important;
-}
-
-p {
-    line-height: 1.5em;
 }
 
 h2, h3, h4, h5 {
@@ -244,7 +244,7 @@ li ul, li ul {
 }
 p, ul, ol{
     font-size: 16px;
-    line-height: 24px;
+    line-height: 1.35em;
     /*max-width: 540px;*/
 }
 
