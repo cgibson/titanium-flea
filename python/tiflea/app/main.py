@@ -12,6 +12,14 @@ from sqlite3 import dbapi2 as sqlite3
 _app = Flask(__name__, template_folder=s.TEMPLATE_DIR, static_folder=s.STATIC_DIR)
 _app.config.from_object(s)
 
+# Load override configuration values into flask config
+#
+override = Path("config.py")
+root = Path(_app.root_path)
+if override.exists():
+    _app.config.from_pyfile(str(override.abspath()))
+
+
 def connect_db():
     return sqlite3.connect(_app.config['DATABASE'])
 
@@ -119,4 +127,6 @@ if __name__ == '__main__':
         init_db()
     else:
         print "running app."
-        _app.run(host=s.HOST_NAME, port=s.HOST_PORT, debug=s.DEBUG)
+        _app.run(host=_app.config["HOST_NAME"], 
+                 port=_app.config["HOST_PORT"], 
+                 debug=_app.config["DEBUG"])
