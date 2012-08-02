@@ -2,7 +2,10 @@
 {% block body %}
 <div class=section>
 {% if entry %}
-    <span class=date>{{ entry.created }}</span>
+    <div class=date>
+      <span class=month>{{ entry.created_month }}</span>
+      <span class=day>{{ entry.created_day }}</span>
+    </div>
     <h2>{{ entry.title }}</h2>
     <div class=metadata>
     <a href="{{ entry.url }}#disqus_thread">0 Comments</a> - 

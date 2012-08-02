@@ -57,6 +57,14 @@ def show_entries():
         
         entry = dict(title=row[1], html=row[3], author=row[4], created=row[5])
         
+        months = ["jan", "feb", "mar", "apr",
+                  "may", "jun", "jul", "aug", 
+                  "sep", "oct", "nov", "dec"]
+        
+        date_tokens = entry["created"].split("-")
+        entry["created_month"] = months[int(date_tokens[1]) - 1]
+        entry["created_day"] = date_tokens[2]
+        
         # Build entry url
         url = "%s/p/%s" % (s.SITE_BASE, row[2])
         entry["url"] = url
@@ -79,6 +87,14 @@ def single_entry(urltitle):
         entry = None
     else:
         entry = dict(title=result[1], html=result[3], author=result[4], created=result[5])
+        
+        months = ["jan", "feb", "mar", "apr",
+                  "may", "jun", "jul", "aug", 
+                  "sep", "oct", "nov", "dec"]
+        
+        date_tokens = entry["created"].split("-")
+        entry["created_month"] = months[int(date_tokens[1]) - 1]
+        entry["created_day"] = date_tokens[2]
         
         url = "%s/p/%s" % (s.SITE_BASE, result[2])
         entry["url"] = url
