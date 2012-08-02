@@ -66,7 +66,7 @@ def show_entries():
         entry["created_day"] = date_tokens[2]
         
         # Build entry url
-        url = "%s/p/%s" % (s.SITE_BASE, row[2])
+        url = "%s/p/%s" % (_app.config["SITE_BASE"], row[2])
         entry["url"] = url
         
         # Build tag list
@@ -96,7 +96,7 @@ def single_entry(urltitle):
         entry["created_month"] = months[int(date_tokens[1]) - 1]
         entry["created_day"] = date_tokens[2]
         
-        url = "%s/p/%s" % (s.SITE_BASE, result[2])
+        url = "%s/p/%s" % (_app.config["SITE_BASE"], result[2])
         entry["url"] = url
         
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[result[0]])
@@ -120,7 +120,7 @@ def tag_entries(tagname):
         entry = dict(title=row[1], html=row[3], author=row[4], created=row[5])
         
         # Build entry url
-        url = "%s/p/%s" % (s.SITE_BASE, row[2])
+        url = "%s/p/%s" % (_app.config["SITE_BASE"], row[2])
         entry["url"] = url
         
         # Build tag list
