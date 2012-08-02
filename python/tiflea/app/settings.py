@@ -2,7 +2,7 @@
 
 WEB_BASE  = "www"
 PORT      = 5000
-SITE_NAME = "Mr Voxel"
+SITE_NAME = "Mr.Voxel"
 SITE_SUBTITLE = "A Dev Blog"
 DEBUG     = True
 HASH_BASE = "hash"

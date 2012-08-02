@@ -9,11 +9,33 @@ body{
     /*font-family: Garamond, Georgia, Palatino, serif;*/
     color: #444444;
     line-height: 1;
+    background-image: url('../../static/img/title_bg_drk.jpg');
+    background-repeat: repeat-x;
+    background-color: #f4f4f4;
+    margin: 0 8px 0 0;
+}
+
+.contents {
+    margin: 0 auto;
+    max-width: 960px;
+    background-image: url('../../static/img/title_bg.jpg');
+    background-repeat: repeat-x;
+    background-color: white;
+}
+
+.pagewrapper {
+    padding: 0 20px 0 20px;
+    border-left: 1px solid #bbb;
+    border-right: 1px solid #bbb;
 }
 
 .page {
-    margin: 0 auto;
-    max-width: 960px;
+    max-width: 700px;
+}
+
+.topbar {
+    padding: 0 20px 0 20px;
+    height: 100px;
 }
 
 .date {
@@ -24,21 +46,28 @@ body{
     font-style: italic;
 }
 
-h1, h1 a {
+.title, .title a {
     text-decoration: none !important;
     font-size: 48px;
-    margin: 10px 0 10px 0;
-    padding: 0;
-    color: #113344 !important;
+    margin: 0px 0 10px 0;
+    padding: 20px 0 0 0;
+    /*color: #113344 !important;*/
+    color: white !important;
     font-weight: 400;
+    text-shadow: #333 0.1em 0.1em 0.2em;
+}
+
+.title b {
+    /*color: #55ddcc !important;*/
 }
 
 .subtitle {
-    color: #999999;
+    color: #FFB765;
+    text-shadow: #333 0.1em 0.1em 0.2em;
     font-style: italic;
     text-transform:uppercase;
     margin-top: -10px;
-    
+    margin-left: 4px;
 }
 
 .tag {
@@ -89,12 +118,9 @@ h1, h1 a {
     border-radius: 10px;
 }
 
-.bodywrapper {
-    max-width: 700px;
-}
-
 div.section {
-    margin: 50px 0 70px 0;
+    margin: 0;
+    padding: 20px 0 50px 0;
 }
 
 .section img {
@@ -111,10 +137,6 @@ img.leftist {
 img.rightist {
     float: right;
     margin: 5px 0px 5px 10px;
-}
-
-div.body {
-    padding: 0 30px 0 0px;
 }
 
 h2, h3, h4, h2 a, h3 a, h4 a {
@@ -136,7 +158,7 @@ h2 {
     font-size: 34px;
     /* The bottom margin is small. It's designed to be used with gray meta text
      * below a post title. */
-    margin: 24px 0 6px;
+    margin: 0 0 6px 0;
 }
 h3 {
     font-size: 24px;
@@ -158,13 +180,13 @@ h5 {
 
 hr {
   border: 0px;
-  background-color: #FFCC88;
+  background-color: #6E7DA4;
   height: 1px;
-  width: 90%;
+  width: 80%;
 }
 
 a {
-    color: #FF6600;/*#3333FF;*/
+    color: #FF7722;/*#3333FF;*/
     margin: 0;
     padding: 0;
     vertical-align: baseline;

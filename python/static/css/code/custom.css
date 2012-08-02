@@ -3,8 +3,9 @@
     font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
     font-size: 0.9em;
     line-height: 1.3em;
-    margin: 10px -30px;
-    padding: 7px 30px;
+    margin: 0px 0px;
+    padding: 15px 15px;
+    border: 1px solid #ccc;
 }
 
 .codehilite .hll { background-color: #ffffcc }

@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class=body>
+
+<div class=page>
     {% for entry in entries %}
     <div class=section>
         <span class=date>{{ entry.created }}</span>
@@ -25,7 +26,6 @@
         <em>Unbelievable.  No entries here so far</em>
     {% endfor %}
 </div>
-
 
 <script type="text/javascript">
 /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */

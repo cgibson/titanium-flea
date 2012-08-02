@@ -3,16 +3,18 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/code/custom.css') }}">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<div class=page>
-  <div class=bodywrapper>
-  <h1><a href="{{config.SITE_BASE}}">{{ config.SITE_NAME }}</a></h1>
-  <div class=subtitle>{{ config.SITE_SUBTITLE }}</div>
-
+<div class=contents>
+  <div class=topbar>
+    <div class=title><a href="{{config.SITE_BASE}}">Mr.<b>Voxel</b></a></div>
+    <div class=subtitle>{{ config.SITE_SUBTITLE }}</div>
+  </div>
   <div class=metanav>
   </div>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
+  <div class=pagewrapper>
+    {% for message in get_flashed_messages() %}
+      <div class=flash>{{ message }}</div>
+    {% endfor %}
+    {% block body %}{% endblock %}
+  </div>
   </div>
 </div>
