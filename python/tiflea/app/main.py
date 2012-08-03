@@ -130,6 +130,14 @@ def single_entry(urltitle):
         url = "%s/p/%s" % (_app.config["SITE_BASE"], result[2])
         entry["url"] = url
         
+        months = ["jan", "feb", "mar", "apr",
+                  "may", "jun", "jul", "aug", 
+                  "sep", "oct", "nov", "dec"]
+        
+        date_tokens = entry["created"].split("-")
+        entry["created_month"] = months[int(date_tokens[1]) - 1]
+        entry["created_day"] = date_tokens[2]
+        
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[result[0]])
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
         
@@ -153,6 +161,14 @@ def tag_entries(tagname):
         # Build entry url
         url = "%s/p/%s" % (_app.config["SITE_BASE"], row[2])
         entry["url"] = url
+        
+        months = ["jan", "feb", "mar", "apr",
+                  "may", "jun", "jul", "aug", 
+                  "sep", "oct", "nov", "dec"]
+        
+        date_tokens = entry["created"].split("-")
+        entry["created_month"] = months[int(date_tokens[1]) - 1]
+        entry["created_day"] = date_tokens[2]
         
         # Build tag list
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
