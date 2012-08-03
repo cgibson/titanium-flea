@@ -213,40 +213,26 @@ h5 {
 
 /* SOCIAL ------------------------------------------------*/
 
-/*
-.social {
-    margin-top: 25px;
-    margin-right: -68px;
-    float: right;
-}
-/**/
-/*
-.social {
-    margin-top: -20px;
-    margin-right: 0px;
-    float: right;
-}
-/**/
 div.social {
     height: 100px;
     float: right;
     padding-top: 25px;
 }
 
-/*
-.twitter {
+/**
+a:hover.twitter{
     background-image: url('../../static/img/tw_icon_blk.png');
 }
 
-.facebook {
+a:hover.facebook {
     background-image: url('../../static/img/fb_icon_blk.png');
 }
 
-.linkedin {
+a:hover.linkedin {
     background-image: url('../../static/img/lin_icon_blk.png');
 }
 
-.rss {
+a:hover.rss {
     background-image: url('../../static/img/rss_icon_blk.png');
 }
 /**/
@@ -282,26 +268,9 @@ div.social {
 }
 
 .social a:hover {
-    background-color: #7587a6 !important;
+    background-color: #FFB765 !important;
+    border: 2px solid #447096;
 }
-/**/
-/*
-.social a {
-    background-size:40px 40px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    width: 40px;
-    height: 40px;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.social a:hover {
-    background-color: #ccc !important;
-}
-*/
-
 
 .metadata {
     /*text-transform:uppercase;*/
@@ -318,7 +287,7 @@ hr {
 }
 
 a {
-    color: #FF7722;/*#3333FF;*/
+    color: #FF7722;
     margin: 0;
     padding: 0;
     vertical-align: baseline;
@@ -328,7 +297,7 @@ a:hover {
     color: #ff6600;
 }
 a:visited {
-    color: #E68A5C; /*7D50C1;*/
+    color: #E68A5C;
 }
 ul, ol {
     padding: 0;
