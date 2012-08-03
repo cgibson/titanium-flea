@@ -13,7 +13,7 @@ body{
     background-image: url('../../static/img/title_bg_drk.jpg');
     background-repeat: repeat-x;
     background-color: #f4f4f4;
-    margin: 0 8px 0 0;
+    margin: 0 0px 0 0;
     
 }
 
@@ -107,6 +107,8 @@ body{
     margin-left: 4px;
 }
 
+/* TAGS --------------------------------------------------*/
+
 .tag {
     text-decoration: none;
     text-transform: lowercase;
@@ -176,6 +178,9 @@ img.rightist {
     margin: 5px 0px 5px 10px;
 }
 
+
+/* HEADERS -----------------------------------------------*/
+
 h2, h3, h4, h2 a, h3 a, h4 a {
     font-family: 'Open Sans Condensed', sans-serif;
     font-weight: 600 !important;
@@ -204,6 +209,99 @@ h4 {
 h5 {
     font-size: 18px;
 }
+
+
+/* SOCIAL ------------------------------------------------*/
+
+/*
+.social {
+    margin-top: 25px;
+    margin-right: -68px;
+    float: right;
+}
+/**/
+/*
+.social {
+    margin-top: -20px;
+    margin-right: 0px;
+    float: right;
+}
+/**/
+div.social {
+    height: 100px;
+    float: right;
+    padding-top: 25px;
+}
+
+/*
+.twitter {
+    background-image: url('../../static/img/tw_icon_blk.png');
+}
+
+.facebook {
+    background-image: url('../../static/img/fb_icon_blk.png');
+}
+
+.linkedin {
+    background-image: url('../../static/img/lin_icon_blk.png');
+}
+
+.rss {
+    background-image: url('../../static/img/rss_icon_blk.png');
+}
+/**/
+/**/
+.twitter {
+    background-image: url('../../static/img/tw_icon.png');
+}
+
+.facebook {
+    background-image: url('../../static/img/fb_icon.png');
+}
+
+.linkedin {
+    background-image: url('../../static/img/lin_icon.png');
+}
+
+.rss {
+    background-image: url('../../static/img/rss_icon.png');
+}
+/**/
+/**/
+.social a {
+    background-size:32px 32px;
+    /*background-color: #46578f;*/
+    border: 2px solid #557086;
+    border-radius: 25px;
+    padding: 5px;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    background-position:center; 
+    background-repeat: no-repeat;
+}
+
+.social a:hover {
+    background-color: #7587a6 !important;
+}
+/**/
+/*
+.social a {
+    background-size:40px 40px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.social a:hover {
+    background-color: #ccc !important;
+}
+*/
+
 
 .metadata {
     /*text-transform:uppercase;*/

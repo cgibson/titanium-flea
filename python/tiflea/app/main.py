@@ -6,6 +6,8 @@ import settings as s
 import os
 from contextlib import closing
 import sys
+from werkzeug.contrib.atom import AtomFeed
+import datetime
 
 from sqlite3 import dbapi2 as sqlite3
 
@@ -73,9 +75,46 @@ def show_entries():
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
         entries.append(entry)
-        
-    #entries = [dict(title=row[0], html=row[1], author=row[2], created=row[3]) for row in cur.fetchall()]
+
     return render_template('show_entries.html', entries=entries)
+
+@_app.route('/feed')
+def feed():
+
+    feed = AtomFeed('Mr.Voxel Articles',
+                    feed_url=request.url, url=request.url_root)
+
+    cur = g.db.execute('select id, title, urltitle, html, author, created, modified from entries order by id desc')
+
+    for row in cur.fetchall():
+        # skip if not published
+        if not row[6]:
+            continue
+        
+        title = row[1]
+        html = row[3]
+        author = row[4]
+        
+        created = row[5]
+        toks = created.split("-")
+        created = datetime.datetime(int(toks[0]), int(toks[1]), int(toks[2]))
+        
+        modified = row[6]
+        toks = modified.split("-")
+        modified = datetime.datetime(int(toks[0]), int(toks[1]), int(toks[2]))
+        
+        url = "%s/p/%s" % (_app.config["SITE_BASE"], row[2])
+        
+        feed.add(title, 
+                 unicode(html), 
+                 content_type="html",
+                 author=author,
+                 url=url,
+                 updated=modified,
+                 published=created
+                 )
+
+    return feed.get_response()
 
 
 @_app.route('/p/<urltitle>')
@@ -87,14 +126,6 @@ def single_entry(urltitle):
         entry = None
     else:
         entry = dict(title=result[1], html=result[3], author=result[4], created=result[5])
-        
-        months = ["jan", "feb", "mar", "apr",
-                  "may", "jun", "jul", "aug", 
-                  "sep", "oct", "nov", "dec"]
-        
-        date_tokens = entry["created"].split("-")
-        entry["created_month"] = months[int(date_tokens[1]) - 1]
-        entry["created_day"] = date_tokens[2]
         
         url = "%s/p/%s" % (_app.config["SITE_BASE"], result[2])
         entry["url"] = url

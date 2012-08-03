@@ -1,16 +1,23 @@
+{% from '_helpers.html' import social with context %}
+
 <!doctype html>
 <title>{{ config.SITE_NAME }} - View Entries</title>
+<link href="{{ url_for('feed') }}" rel="alternate" title="Recent Changes" type="application/atom+xml">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/code/custom.css') }}">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:400italic,400,800,700' rel='stylesheet' type='text/css'>
 <div class=contents>
   <div class=topbar>
+    {{ social(facebook="https://www.facebook.com/mrvoxel",
+              linkedin="http://www.linkedin.com/in/mrvoxel",
+              twitter="http://twitter.com/mrvoxel") }}
     <div class=title><a href="{{config.SITE_BASE}}">Mr.<b>Voxel</b></a></div>
     <div class=subtitle>{{ config.SITE_SUBTITLE }}</div>
   </div>
   <div class=metanav>
   </div>
+    
   <div class=pagewrapper>
     {% for message in get_flashed_messages() %}
       <div class=flash>{{ message }}</div>

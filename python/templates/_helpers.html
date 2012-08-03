@@ -1,0 +1,18 @@
+{% macro social(twitter="", facebook="", linkedin="", rss="") %}
+<div class=social>
+    {% if twitter != "" %}
+    
+    <a href="{{ twitter }}" class=twitter></a>
+    {% endif %}
+    {% if facebook != "" %}
+    <a href="{{ facebook }}" class=facebook></a>
+    {% endif %}
+    {% if linkedin != "" %}
+    <a href="{{ linkedin }}" class=linkedin></a>
+    {% endif %}
+    {% if rss != "" %}
+    <a href="{{ rss }}" class=rss></a>
+    {% endif %}
+    
+</div>
+{% endmacro %}
