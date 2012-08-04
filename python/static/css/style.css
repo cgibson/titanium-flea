@@ -214,7 +214,7 @@ h5 {
 /* SOCIAL ------------------------------------------------*/
 
 div.social {
-    height: 100px;
+    height: 75px;
     float: right;
     padding-top: 25px;
 }
@@ -262,6 +262,10 @@ div.social {
     float: right;
     width: 200px;
     clear: both;
+}
+
+.sidebar h2 {
+    padding-top: 20px;
 }
 
 .sidebar ul {
