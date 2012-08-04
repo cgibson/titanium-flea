@@ -8,6 +8,7 @@ from contextlib import closing
 import sys
 from werkzeug.contrib.atom import AtomFeed
 import datetime
+from tiflea import util
 
 from sqlite3 import dbapi2 as sqlite3
 
@@ -49,7 +50,6 @@ def teardown_request(exception):
 
 @_app.route('/')
 def show_entries():
-    print os.getcwd()
     cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
     entries = []
     for row in cur.fetchall():
@@ -76,7 +76,7 @@ def show_entries():
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
         entries.append(entry)
 
-    return render_template('show_entries.html', entries=entries)
+    return render_template('show_entries.html', entries=entries, util=util)
 
 @_app.route('/feed')
 def feed():
@@ -141,7 +141,7 @@ def single_entry(urltitle):
         cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[result[0]])
         entry["tags"] = [tag[0] for tag in cur.fetchall()]
         
-    return render_template('single_entry.html', entry=entry)
+    return render_template('single_entry.html', entry=entry, util=util)
 
 
 @_app.route('/t/<tagname>')
@@ -176,7 +176,10 @@ def tag_entries(tagname):
         entries.append(entry)
         
     #entries = [dict(title=row[0], html=row[1], author=row[2], created=row[3]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries, selected_tag=tagname )
+    return render_template('show_entries.html', entries=entries, selected_tag=tagname, util=util)
+
+
+
 
 
 def runServer():
@@ -184,6 +187,13 @@ def runServer():
 
 
 if __name__ == '__main__':
+    
+    if _app.config['DEBUG']:
+        from werkzeug.wsgi import SharedDataMiddleware
+
+        _app.wsgi_app = SharedDataMiddleware(_app.wsgi_app, {
+          '/': os.path.join(os.path.dirname(__file__), 'static')
+        })
     
     if len(sys.argv) == 2 and sys.argv[1] == "init":
         print "initializing db."
@@ -193,3 +203,4 @@ if __name__ == '__main__':
         _app.run(host=_app.config["HOST_NAME"], 
                  port=_app.config["HOST_PORT"], 
                  debug=_app.config["DEBUG"])
+    

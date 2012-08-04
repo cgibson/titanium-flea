@@ -1,4 +1,5 @@
 {% from '_helpers.html' import social with context %}
+{% from '_helpers.html' import sidebar with context %}
 
 <!doctype html>
 <title>{{ config.SITE_NAME }} - View Entries</title>
@@ -18,7 +19,7 @@
   </div>
   <div class=metanav>
   </div>
-    
+  
   <div class=pagewrapper>
     {% for message in get_flashed_messages() %}
       <div class=flash>{{ message }}</div>

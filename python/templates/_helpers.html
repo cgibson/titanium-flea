@@ -16,3 +16,15 @@
     
 </div>
 {% endmacro %}
+
+
+{% macro sidebar() %}
+<div class=sidebar>
+    <h3>Recent</h3>
+    <ul>
+    {% for entry in util.getRecentEntries() %}
+        <li><a href="{{entry.url}}">{{entry.title}}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endmacro %}
