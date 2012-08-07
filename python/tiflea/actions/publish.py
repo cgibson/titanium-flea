@@ -135,6 +135,9 @@ if __name__ == '__main__':
     title = opts.title
     url_title = url_friendly_text(title)
     text = opts.post_file.read()
+    
+    # Convert to unicode to avoid silly errors with encoding
+    # unicode_content = text.encode('utf8', 'ignore')
     html = markdown.markdown(text, ['codehilite', mdx_mathjax.makeExtension()])
     author = opts.author
     tags = opts.tags
