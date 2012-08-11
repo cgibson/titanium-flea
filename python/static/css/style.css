@@ -22,13 +22,25 @@ body{
     max-width: 960px;
     background-image: url('/static/img/title_bg.jpg');
     background-repeat: repeat-x;
-    background-color: white;
 }
 
 .pagewrapper {
     padding: 0 20px 0 20px;
     border-left: 1px solid #bbb;
     border-right: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: white;
+}
+
+.copyright {
+	color: #888;
+	text-align: center;
+	padding: 20px;
+	font-size: 13px;
+	font-family: Garamond, Georgia, Palatino, serif;
+	font-style: italic;
 }
 
 .page {

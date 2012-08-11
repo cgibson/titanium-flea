@@ -79,7 +79,7 @@ def getEntryid(db, urltitle):
     
 
 
-def publish(title, url_title, text, html, author=s.DEFAULT_AUTHOR, tags=[], created=datetime.date.today(), preview=False):
+def publish(title, url_title, text, html, author=s.DEFAULT_AUTHOR, tags=[], created=str(datetime.date.today()), updated=str(datetime.date.today()), preview=False):
     
     db = sqlite3.connect(s.DATABASE)
     
@@ -98,14 +98,14 @@ def publish(title, url_title, text, html, author=s.DEFAULT_AUTHOR, tags=[], crea
             return
         else:
             db.execute("""
-            update entries set title=?, text=?, html=?, author=?, modified=?, published=? where urltitle=?
+            update entries set title=?, text=?, html=?, author=?, created=?, modified=?, published=? where urltitle=?
             """,
-            [title, text, html, author, str(created), not preview, url_title])
+            [title, text, html, author, created, updated, not preview, url_title])
     else:
         db.execute("""
         insert into entries (title, urltitle, text, html, author, created, modified, published) values(?, ?, ?, ?, ?, ?, ?, ?)
         """,
-        [title, url_title, text, html, author, str(created), str(created), not preview])
+        [title, url_title, text, html, author, created, updated, not preview])
     
     entryid = getEntryid(db, url_title)
     setTags(db, entryid, tags)
@@ -116,7 +116,7 @@ def publish(title, url_title, text, html, author=s.DEFAULT_AUTHOR, tags=[], crea
 
 def url_friendly_text(text):
     text = re.sub("[ ]", "_", text)
-    text = re.sub("[\"!',\.~\%\\&\*\$\(\)\?]", "", text)
+    text = re.sub("[\"!',\.~\%\\&\*\$\(\)\?:]", "", text)
     return text.lower()
 
 
@@ -127,6 +127,8 @@ if __name__ == '__main__':
     parser.add_argument("title")
     parser.add_argument("post_file", type=argparse.FileType('r'))
     parser.add_argument("-author", default=s.DEFAULT_AUTHOR)
+    parser.add_argument("-created", default=str(datetime.date.today()))
+    parser.add_argument("-updated", default=str(datetime.date.today()))
     parser.add_argument("-tags", nargs="*", default=[])
     parser.add_argument("-preview", action="store_true", default=False)
     
@@ -142,10 +144,12 @@ if __name__ == '__main__':
     author = opts.author
     tags = opts.tags
     preview = opts.preview
+    created = opts.created
+    updated = opts.updated
     
     opts.post_file.close()
     
-    publish(title, url_title, text, html, author=author, tags=tags, preview=preview)
+    publish(title, url_title, text, html, author=author, tags=tags, created=created, updated=updated, preview=preview)
     
     if preview:
         url = "%s/p/%s" % (s.SITE_BASE, url_title)
