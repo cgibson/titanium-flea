@@ -44,7 +44,7 @@ body{
 }
 
 .page {
-    max-width: 700px;
+    max-width: 650px;
 }
 
 .topbar {
@@ -215,7 +215,8 @@ h1 {
 }
 
 h2 {
-    font-size: 20px;
+	margin-bottom:0px;
+    font-size: 18px;
     font-style: italic;
 }
 /*
@@ -274,7 +275,7 @@ div.social {
 
 .sidebar {
     float: right;
-    width: 200px;
+    width: 240px;
     clear: both;
 }
 
@@ -328,7 +329,7 @@ li ul, li ul {
     margin-left: 24px;
 }
 p, ul, ol{
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.35em;
     /*max-width: 540px;*/
 }
