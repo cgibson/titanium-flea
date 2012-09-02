@@ -7,10 +7,12 @@ import os
 from contextlib import closing
 import sys
 from werkzeug.contrib.atom import AtomFeed
-import datetime
+import datetime, iso8601
 from tiflea import util
 
-from sqlite3 import dbapi2 as sqlite3
+from tiflea.post import Post
+import couchdb
+#from sqlite3 import dbapi2 as sqlite3
 
 _app = Flask(__name__, template_folder=s.TEMPLATE_DIR, static_folder=s.STATIC_DIR)
 _app.config.from_object(s)
@@ -23,60 +25,69 @@ if override.exists():
     _app.config.from_pyfile(str(override.abspath()))
 
 
-def connect_db():
-    return sqlite3.connect(_app.config['DATABASE'])
+def connect_db(db_name):
+    #return sqlite3.connect(_app.config['DATABASE'])
+    couch = couchdb.Server()
+    couch.resource.credentials = ("testuser","spacejanitor")
+    return couch[db_name]
 
 
 def init_db():
     """Creates the database tables."""
+    """
     with closing(connect_db()) as db:
         with _app.open_resource('../../scripts/schema.sql') as f:
             db.cursor().executescript(f.read())
         db.commit()
+    """
+    pass
 
 
 @_app.before_request
 def before_request():
     """Make sure we are connected to the database each request."""
-    g.db = connect_db()
+    g.db = connect_db("mrvoxel_blog")
 
 
 @_app.teardown_request
 def teardown_request(exception):
     """Closes the database again at the end of the request."""
-    if hasattr(g, 'db'):
-        g.db.close()
+    #if hasattr(g, 'db'):
+    #    g.db.close()
 
 
 @_app.route('/')
 def show_entries():
-    cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
-    entries = []
-    for row in cur.fetchall():
+    
+    #cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
+    Post.by_title.sync(g.db)
+    posts = Post.by_title(g.db)
+    #results = g.db.view("blog/by_title")
+    outPosts = []
+    for post in posts:
+    #for row in cur.fetchall():
         # skip if not published
-        if not row[6]:
+        print post
+        if not post["published"]:
             continue
         
-        entry = dict(title=row[1], html=row[3], author=row[4], created=row[5])
+        # Create a datetime object from our timestamp.
+        d = iso8601.parse_date( post["timestamp"] )
         
         months = ["jan", "feb", "mar", "apr",
                   "may", "jun", "jul", "aug", 
                   "sep", "oct", "nov", "dec"]
         
-        date_tokens = entry["created"].split("-")
-        entry["created_month"] = months[int(date_tokens[1]) - 1]
-        entry["created_day"] = date_tokens[2]
+        post["created_month"] = months[d.month - 1]
+        post["created_day"] = d.day
         
         # Build entry url
-        url = "%s/p/%s" % (_app.config["SITE_BASE"], row[2])
-        entry["url"] = url
+        url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
+        post["url"] = url
         
-        # Build tag list
-        cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
-        entry["tags"] = [tag[0] for tag in cur.fetchall()]
-        entries.append(entry)
+        outPosts.append(post)
 
-    return render_template('show_entries.html', entries=entries, util=util)
+    return render_template('show_entries.html', entries=outPosts, util=util)
 
 @_app.route('/feed')
 def feed():
@@ -117,66 +128,67 @@ def feed():
     return feed.get_response()
 
 
-@_app.route('/p/<urltitle>')
-def single_entry(urltitle):
+@_app.route('/p/<post_id>')
+def single_entry(post_id):
 
-    cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries where urltitle==?',[urltitle])
-    result = cur.fetchone()
-    if not result:
-        entry = None
-    else:
-        entry = dict(title=result[1], html=result[3], author=result[4], created=result[5])
+    #cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries where urltitle==?',[urltitle])
+    #result = cur.fetchone()
+    post = Post.load(g.db, post_id)
+    
+    # Create a datetime object from our timestamp.
+    d = iso8601.parse_date( post["timestamp"] )
+    
+    months = ["jan", "feb", "mar", "apr",
+              "may", "jun", "jul", "aug", 
+              "sep", "oct", "nov", "dec"]
+    
+    post["created_month"] = months[d.month - 1]
+    post["created_day"] = d.day
+    
+    # Build entry url
+    url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
+    post["url"] = url
         
-        url = "%s/p/%s" % (_app.config["SITE_BASE"], result[2])
-        entry["url"] = url
-        
-        months = ["jan", "feb", "mar", "apr",
-                  "may", "jun", "jul", "aug", 
-                  "sep", "oct", "nov", "dec"]
-        
-        date_tokens = entry["created"].split("-")
-        entry["created_month"] = months[int(date_tokens[1]) - 1]
-        entry["created_day"] = date_tokens[2]
-        
-        cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[result[0]])
-        entry["tags"] = [tag[0] for tag in cur.fetchall()]
-        
-    return render_template('single_entry.html', entry=entry, util=util)
+    return render_template('single_entry.html', entry=post, util=util)
 
 
 @_app.route('/t/<tagname>')
 def tag_entries(tagname):
-    cur = g.db.execute('select e.id, e.title, e.urltitle, e.html, e.author, e.created, e.published ' +
-                       ' from entries e, tags t, tagsXentries x ' +
-                       ' where x.tagid==t.id and x.entryid=e.id and t.name==? ' +
-                       ' order by e.id desc', [tagname])
-    entries = []
-    for row in cur.fetchall():
-        # skip if not published
-        if not row[6]:
-            continue
+    Post.by_tag.sync(g.db)
+    
+    # We're sure we're only getting one value here
+    results = Post.by_tag(g.db, key=tagname)
+    outPosts = []
+    
+    for result_data in results:
         
-        entry = dict(title=row[1], html=row[3], author=row[4], created=row[5])
+        # index into the second half of the tuple (the first just reminds us of
+        # what tag we're using)
+        posts = result_data[1]
         
-        # Build entry url
-        url = "%s/p/%s" % (_app.config["SITE_BASE"], row[2])
-        entry["url"] = url
-        
-        months = ["jan", "feb", "mar", "apr",
-                  "may", "jun", "jul", "aug", 
-                  "sep", "oct", "nov", "dec"]
-        
-        date_tokens = entry["created"].split("-")
-        entry["created_month"] = months[int(date_tokens[1]) - 1]
-        entry["created_day"] = date_tokens[2]
-        
-        # Build tag list
-        cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
-        entry["tags"] = [tag[0] for tag in cur.fetchall()]
-        entries.append(entry)
-        
-    #entries = [dict(title=row[0], html=row[1], author=row[2], created=row[3]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries, selected_tag=tagname, util=util)
+        # Now that we finally have all of the post data, iterate through the list
+        for post in posts:
+
+            # skip if not published
+            if not post["published"]:
+                continue
+            
+            # Create a datetime object from our timestamp.
+            d = iso8601.parse_date( post["timestamp"] )
+            
+            months = ["jan", "feb", "mar", "apr",
+                      "may", "jun", "jul", "aug", 
+                      "sep", "oct", "nov", "dec"]
+            
+            post["created_month"] = months[d.month - 1]
+            post["created_day"] = d.day
+            
+            # Build entry url
+            url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
+            post["url"] = url
+            outPosts.append(post)
+    
+    return render_template('show_entries.html', entries=outPosts, selected_tag=tagname, util=util)
 
 
 

@@ -5,35 +5,38 @@ Created on Aug 3, 2012
 '''
 from flask import g
 import flask
+import iso8601
 
 def helloWorld():
     return "Hello, World!"
 
 def getRecentEntries():
-    cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
+    results = g.db.view("blog/by_date")
+    #cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
     entries = []
-    for row in cur.fetchall():
+    for row in results:
+        data = row.value
+    #for row in cur.fetchall():
         # skip if not published
-        if not row[6]:
+        if not data["published"]:
             continue
         
-        entry = dict(title=row[1], html=row[3], author=row[4], created=row[5])
+        entry = dict(title=data["title"], html=data["html"], author=data["author"], created=data["timestamp"], tags=data["tags"])
+        
+        # Create a datetime object from our timestamp.
+        d = iso8601.parse_date( entry["created"] )
         
         months = ["jan", "feb", "mar", "apr",
                   "may", "jun", "jul", "aug", 
                   "sep", "oct", "nov", "dec"]
         
-        date_tokens = entry["created"].split("-")
-        entry["created_month"] = months[int(date_tokens[1]) - 1]
-        entry["created_day"] = date_tokens[2]
+        entry["created_month"] = months[d.month - 1]
+        entry["created_day"] = d.day
         
         # Build entry url
-        url = "%s/p/%s" % (flask.current_app.config["SITE_BASE"], row[2])
+        url = "%s/p/%s" % (flask.current_app.config["SITE_BASE"], data["_id"])
         entry["url"] = url
         
-        # Build tag list
-        cur = g.db.execute('select t.name from tags t, tagsXentries x where x.entryid==? and x.tagid==t.id',[row[0]])
-        entry["tags"] = [tag[0] for tag in cur.fetchall()]
         entries.append(entry)
         
     return entries
