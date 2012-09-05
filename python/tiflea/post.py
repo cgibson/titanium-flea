@@ -14,11 +14,12 @@ class Post(Document):
     tags = ListField( TextField() )
     markdown = TextField()
     html = TextField()
+    category = TextField()
     author = TextField()
     published = BooleanField()
     title = TextField()
     _id = TextField()
-    _rev = TextField()
+    #_rev = TextField()
     
     
     @classmethod
@@ -57,11 +58,7 @@ class Post(Document):
     """
     
     def _wrap_post_list(row):
-        posts = []
-        for post_data in row["value"]:
-            posts.append( Post.wrap(post_data) )
-                
-        return (row["key"], posts)
+        return map(lambda data: Post.wrap(data), row["value"])
     
     
     def by_tag_reduce(keys, values):
@@ -69,8 +66,9 @@ class Post(Document):
     
     @ViewField.define('posts', reduce_fun=by_tag_reduce, group=True, wrapper=_wrap_post_list)
     def by_tag(doc):
-        for tag in doc["tags"]:
-            yield tag, doc
+        if "tags" in doc:
+            for tag in doc["tags"]:
+                yield tag, doc
     
     @ViewField.define('posts')
     def by_timestamp(doc):

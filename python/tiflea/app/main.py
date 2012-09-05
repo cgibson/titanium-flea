@@ -61,9 +61,11 @@ def show_entries():
     
     #cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
     Post.by_title.sync(g.db)
+    Post.by_tag.sync(g.db)
     posts = Post.by_title(g.db)
     #results = g.db.view("blog/by_title")
     outPosts = []
+    print posts.rows
     for post in posts:
     #for row in cur.fetchall():
         # skip if not published
@@ -95,34 +97,26 @@ def feed():
     feed = AtomFeed('Mr.Voxel Articles',
                     feed_url=request.url, url=request.url_root)
 
-    cur = g.db.execute('select id, title, urltitle, html, author, created, modified from entries order by id desc')
+    Post.by_title.sync(g.db)
+    posts = Post.by_title(g.db)
 
-    for row in cur.fetchall():
+    for post in posts:
+    #for row in cur.fetchall():
         # skip if not published
-        if not row[6]:
+        print post
+        if not post["published"]:
             continue
+
+        # Build entry url
+        url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
         
-        title = row[1]
-        html = row[3]
-        author = row[4]
-        
-        created = row[5]
-        toks = created.split("-")
-        created = datetime.datetime(int(toks[0]), int(toks[1]), int(toks[2]))
-        
-        modified = row[6]
-        toks = modified.split("-")
-        modified = datetime.datetime(int(toks[0]), int(toks[1]), int(toks[2]))
-        
-        url = "%s/p/%s" % (_app.config["SITE_BASE"], row[2])
-        
-        feed.add(title, 
-                 unicode(html), 
+        feed.add(post.title, 
+                 unicode(post.html), 
                  content_type="html",
-                 author=author,
+                 author=post.author,
                  url=url,
-                 updated=modified,
-                 published=created
+                 updated=post.timestamp,
+                 published=post.timestamp
                  )
 
     return feed.get_response()
@@ -160,11 +154,7 @@ def tag_entries(tagname):
     results = Post.by_tag(g.db, key=tagname)
     outPosts = []
     
-    for result_data in results:
-        
-        # index into the second half of the tuple (the first just reminds us of
-        # what tag we're using)
-        posts = result_data[1]
+    for posts in results:
         
         # Now that we finally have all of the post data, iterate through the list
         for post in posts:
