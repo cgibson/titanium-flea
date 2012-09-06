@@ -11,22 +11,22 @@
           <span class=month>{{ entry.created_month }}</span>
           <span class=day>{{ entry.created_day }}</span>
         </div>
-        <span class=posttitle><a href="{{ entry.url }}">{{ entry.title }}</a></span>
-        <div class=metadata>
-        <a href="{{ entry.url }}#disqus_thread">0 Comments</a> - 
-        posted under 
-        {% for tag in entry.tags %}
-            {% if tag == selected_tag %}
-                <a class=selected_tag href="{{ config.SITE_BASE }}/t/{{tag}}">{{ tag }}</a>
-            {% else %}
-                <a class=tag href="{{ config.SITE_BASE }}/t/{{tag}}">{{ tag }}</a>
-            {% endif %}
-        {% else %}
-            <a class=graytag href="#">None</a>
-        {% endfor %}
-        </div>
+        <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+	    <div class=metadata>
+	    <a href="{{ entry.url }}#disqus_thread">0 Comments</a> - 
+	    posted by {{entry.author}} under 
+	    <a class="category" href="{{ config.SITE_BASE }}/c/{{entry.category}}">{{entry.category}}</a><br>
+	    </div>
         <hr>
         {{ entry.html|safe }}
+        
+        <div class=metadata>
+	    {% for tag in entry.tags %}
+	        <a class=tag href="{{ config.SITE_BASE }}/t/{{tag}}">{{ tag }}</a>
+	    {% else %}
+	        <a class=graytag href="#">None</a>
+	    {% endfor %}
+	    </div>
     </div>
     {% else %}
         <em>Unbelievable.  No entries here so far</em>

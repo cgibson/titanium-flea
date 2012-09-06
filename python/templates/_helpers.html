@@ -20,7 +20,7 @@
 
 {% macro sidebar() %}
 <div class=sidebar>
-    <h3>Recent</h3>
+    <h2>Recent</h2>
     <ul>
     {% for entry in util.getRecentEntries() %}
         <li><a href="{{entry.url}}">{{entry.title}}</a></li>

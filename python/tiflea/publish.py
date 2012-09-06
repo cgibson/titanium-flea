@@ -13,7 +13,7 @@ import argparse
 
 import couchdb
 from post import Post
-from settings import BlogSettings
+import settings
 
 def publish(title, mdtext, html, category, author=s.DEFAULT_AUTHOR, tags=[], timestamp=datetime.datetime.now(), preview=False):
 
@@ -21,9 +21,9 @@ def publish(title, mdtext, html, category, author=s.DEFAULT_AUTHOR, tags=[], tim
     doc_id = Post.url_friendly_text(title)
     couch = couchdb.Server()
     db = couch["mrvoxel_blog"]
-    blog_settings = BlogSettings.getSettings(db)
+    blog_settings = settings.loadSettings(db)
     
-    if not category in blog_settings["categories"]:
+    if not category in blog_settings["blog_categories"]:
         raise ValueError("No such category: %s" % category)
     
     print "checking for [%s]" % doc_id

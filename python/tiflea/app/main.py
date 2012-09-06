@@ -2,51 +2,44 @@ from __future__ import with_statement
 
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from tripy.utils.path import Path
-import settings as s
 import os
-from contextlib import closing
 import sys
 from werkzeug.contrib.atom import AtomFeed
-import datetime, iso8601
+import iso8601
 from tiflea import util
 
 from tiflea.post import Post
 import couchdb
+import tiflea.settings as blogsettings
 #from sqlite3 import dbapi2 as sqlite3
 
-_app = Flask(__name__, template_folder=s.TEMPLATE_DIR, static_folder=s.STATIC_DIR)
-_app.config.from_object(s)
+_app = Flask(__name__)
+#_app.config.from_object(s)
 
 # Load override configuration values into flask config
 #
 override = Path("config.py")
 root = Path(_app.root_path)
-if override.exists():
-    _app.config.from_pyfile(str(override.abspath()))
+if not override.exists():
+    raise ValueError("No config file found")
 
+_app.config.from_pyfile(str(override.abspath()))
+
+_app.template_folder = _app.config["TEMPLATE_DIR"]
+_app.static_folder = _app.config["STATIC_DIR"]
 
 def connect_db(db_name):
     #return sqlite3.connect(_app.config['DATABASE'])
-    couch = couchdb.Server()
-    couch.resource.credentials = ("testuser","spacejanitor")
+    couch = couchdb.Server(_app.config["DB_HOST"])
+    couch.resource.credentials = _app.config["DB_AUTH"]
     return couch[db_name]
-
-
-def init_db():
-    """Creates the database tables."""
-    """
-    with closing(connect_db()) as db:
-        with _app.open_resource('../../scripts/schema.sql') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-    """
-    pass
 
 
 @_app.before_request
 def before_request():
     """Make sure we are connected to the database each request."""
-    g.db = connect_db("mrvoxel_blog")
+    g.db = connect_db(_app.config["DB_NAME"])
+    g.settings = blogsettings.loadSettings()
 
 
 @_app.teardown_request
@@ -190,19 +183,22 @@ def runServer():
 
 if __name__ == '__main__':
     
+    db = connect_db(_app.config["DB_NAME"])
+    settings = blogsettings.loadSettings(db)
+    for k,v in settings.iteritems():
+        if k[0] == "_":
+            continue
+        _app.config[k] = v
+    
     if _app.config['DEBUG']:
         from werkzeug.wsgi import SharedDataMiddleware
 
         _app.wsgi_app = SharedDataMiddleware(_app.wsgi_app, {
           '/': os.path.join(os.path.dirname(__file__), 'static')
         })
-    
-    if len(sys.argv) == 2 and sys.argv[1] == "init":
-        print "initializing db."
-        init_db()
-    else:
-        print "running app."
-        _app.run(host=_app.config["HOST_NAME"], 
-                 port=_app.config["HOST_PORT"], 
-                 debug=_app.config["DEBUG"])
+
+    print "running app."
+    _app.run(host=_app.config["HOST"], 
+             port=_app.config["PORT"], 
+             debug=_app.config["DEBUG"])
     

@@ -6,18 +6,22 @@
       <span class=month>{{ entry.created_month }}</span>
       <span class=day>{{ entry.created_day }}</span>
     </div>
-    <span class=posttitle>{{ entry.title }}</span>
+    <h1>{{ entry.title }}</h1>
     <div class=metadata>
     <a href="{{ entry.url }}#disqus_thread">0 Comments</a> - 
-    posted under 
+    posted by {{entry.author}} under 
+    <a class="category" href="{{ config.SITE_BASE }}/c/{{entry.category}}">{{entry.category}}</a><br>
+    </div>
+    <hr>
+    {{ entry.html|safe }}
+    
+    <div class=metadata>
     {% for tag in entry.tags %}
         <a class=tag href="{{ config.SITE_BASE }}/t/{{tag}}">{{ tag }}</a>
     {% else %}
         <a class=graytag href="#">None</a>
     {% endfor %}
     </div>
-    <hr>
-    {{ entry.html|safe }}
     
 	<div id="disqus_thread"></div>
     <script type="text/javascript">
