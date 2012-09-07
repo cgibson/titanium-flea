@@ -70,6 +70,16 @@ class Post(Document):
             for tag in doc["tags"]:
                 yield tag, doc
     
+    
+    def by_cat_reduce(keys, values):
+        return values
+    
+    @ViewField.define('posts', reduce_fun=by_cat_reduce, group=True, wrapper=_wrap_post_list)
+    def by_cat(doc):
+        if "category" in doc:
+            yield doc["category"], doc
+                
+    
     @ViewField.define('posts')
     def by_timestamp(doc):
         if "timestamp" in doc:

@@ -7,7 +7,7 @@ import sys
 from werkzeug.contrib.atom import AtomFeed
 import iso8601
 from tiflea import util
-
+import datetime
 from tiflea.post import Post
 import couchdb
 import tiflea.settings as blogsettings
@@ -68,14 +68,16 @@ def show_entries():
         
         # Create a datetime object from our timestamp.
         d = iso8601.parse_date( post["timestamp"] )
-        
+        """
         months = ["jan", "feb", "mar", "apr",
                   "may", "jun", "jul", "aug", 
                   "sep", "oct", "nov", "dec"]
         
         post["created_month"] = months[d.month - 1]
         post["created_day"] = d.day
+        """
         
+        post["date"] = d.strftime("%B %d, %Y")
         # Build entry url
         url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
         post["url"] = url
@@ -124,13 +126,16 @@ def single_entry(post_id):
     
     # Create a datetime object from our timestamp.
     d = iso8601.parse_date( post["timestamp"] )
-    
+    """
     months = ["jan", "feb", "mar", "apr",
               "may", "jun", "jul", "aug", 
               "sep", "oct", "nov", "dec"]
     
     post["created_month"] = months[d.month - 1]
     post["created_day"] = d.day
+    """
+    
+    post["date"] = d.strftime("%B %d, %Y")
     
     # Build entry url
     url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
@@ -158,13 +163,15 @@ def tag_entries(tagname):
             
             # Create a datetime object from our timestamp.
             d = iso8601.parse_date( post["timestamp"] )
-            
+            """
             months = ["jan", "feb", "mar", "apr",
                       "may", "jun", "jul", "aug", 
                       "sep", "oct", "nov", "dec"]
             
             post["created_month"] = months[d.month - 1]
             post["created_day"] = d.day
+            """
+            post["date"] = d.strftime("%B %d, %Y")
             
             # Build entry url
             url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
@@ -172,6 +179,44 @@ def tag_entries(tagname):
             outPosts.append(post)
     
     return render_template('show_entries.html', entries=outPosts, selected_tag=tagname, util=util)
+
+
+
+@_app.route('/c/<category>')
+def category_entries(category):
+    Post.by_cat.sync(g.db)
+    
+    # We're sure we're only getting one value here
+    results = Post.by_cat(g.db, key=category)
+    outPosts = []
+    
+    for posts in results:
+        
+        # Now that we finally have all of the post data, iterate through the list
+        for post in posts:
+
+            # skip if not published
+            if not post["published"]:
+                continue
+            
+            # Create a datetime object from our timestamp.
+            d = iso8601.parse_date( post["timestamp"] )
+            """
+            months = ["jan", "feb", "mar", "apr",
+                      "may", "jun", "jul", "aug", 
+                      "sep", "oct", "nov", "dec"]
+            
+            post["created_month"] = months[d.month - 1]
+            post["created_day"] = d.day
+            """
+            post["date"] = d.strftime("%B %d, %Y")
+            
+            # Build entry url
+            url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
+            post["url"] = url
+            outPosts.append(post)
+    
+    return render_template('show_entries.html', entries=outPosts, selected_cat=category, util=util)
 
 
 

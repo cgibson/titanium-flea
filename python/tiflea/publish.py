@@ -4,7 +4,6 @@ Created on Jul 28, 2012
 @author: cgibson
 '''
 
-import app.settings as s
 import datetime
 import markdown
 import md.ext.mdx_mathjax as mdx_mathjax
@@ -15,7 +14,7 @@ import couchdb
 from post import Post
 import settings
 
-def publish(title, mdtext, html, category, author=s.DEFAULT_AUTHOR, tags=[], timestamp=datetime.datetime.now(), preview=False):
+def publish(title, mdtext, html, category, author="Chris", tags=[], timestamp=datetime.datetime.now(), preview=False):
 
 
     doc_id = Post.url_friendly_text(title)
@@ -66,7 +65,7 @@ if __name__ == '__main__':
     parser.add_argument("title")
     parser.add_argument("post_file", type=argparse.FileType('r'))
     parser.add_argument("category")
-    parser.add_argument("-author", default=s.DEFAULT_AUTHOR)
+    parser.add_argument("-author", default="Chris")
     parser.add_argument("-created", default=datetime.datetime.now())
     parser.add_argument("-tags", nargs="*", default=[])
     parser.add_argument("-preview", action="store_true", default=False)
@@ -82,13 +81,13 @@ if __name__ == '__main__':
     author = opts.author
     tags = opts.tags
     preview = opts.preview
-    timestamp = opts.created
+    timestamp = datetime.datetime.strptime(opts.created, "%m/%d/%Y")
     category = opts.category
     
     opts.post_file.close()
     
     doc_id = publish(title, mdtext, html, category, author=author, tags=tags, timestamp=timestamp, preview=preview)
     
-    if preview and doc_id:
-        url = "%s/p/%s" % (s.SITE_BASE, doc_id)
-        subprocess.call(["chromium-browser", url])
+    #if preview and doc_id:
+    #    url = "%s/p/%s" % (s.SITE_BASE, doc_id)
+    #    subprocess.call(["chromium-browser", url])
