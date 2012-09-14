@@ -17,6 +17,7 @@ body{
     
 }
 
+
 strong {
 	font-weight: 600 !important;
 }
@@ -164,6 +165,48 @@ strong {
     margin-left: 30px;
 }
 
+
+.important {
+    padding: 10px 15px 5px 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #dc6;
+    background-color: #ffd;
+    z-index:1;
+    
+    
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.important strong {
+    line-height: 32px;
+}
+
+.exclamation {
+    width: 32px;
+    height: 32px;
+    background-image: url("/static/img/alert_icon.png");
+    background-repeat: none;
+    background-position: center;
+    z-index: 2;
+    /*position: absolute;
+    margin-left: -47px;*/
+    float: right;
+    margin-left: -20px;
+}
+
 /* TAGS --------------------------------------------------*/
 
 .tag, .category{
@@ -173,6 +216,7 @@ strong {
     white-space: nowrap;
     overflow: visible;
     margin-right: 7px;
+    margin-bottom
 
 }
 
@@ -318,6 +362,13 @@ div.social {
     font-size: 0.8em;
     color: #888888;
     margin: 5px 5px 10px 5px;
+}
+
+.tagmetadata {
+    /*text-transform:uppercase;*/
+    font-size: 0.8em;
+    color: #888888;
+    margin: 5px 5px 46px 5px;
 }
 
 

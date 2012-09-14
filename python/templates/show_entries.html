@@ -17,7 +17,7 @@
         <hr>
         {{ entry.html|safe }}
         
-        <div class=metadata>
+        <div class=tagmetadata>
 	    {% for tag in entry.tags %}
 	        <a class=tag href="{{ config.SITE_BASE }}/t/{{tag}}">{{ tag }}</a>
 	    {% else %}
