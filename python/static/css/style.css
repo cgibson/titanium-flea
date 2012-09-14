@@ -446,9 +446,16 @@ p, ul, ol{
     /*max-width: 540px;*/
 }
 
-.codehilite pre{
+.codehilite{
+	padding: 7px 15px 7px 15px;
     border-radius: 5px;
 	/*max-width: 540px;*/
+}
+
+.codehilite pre{
+	padding: 0px;
+	margin: 0px;
+	line-height: 1.17em;
 }
 
 code {
