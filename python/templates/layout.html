@@ -1,26 +1,39 @@
 {% from '_helpers.html' import social with context %}
 {% from '_helpers.html' import sidebar with context %}
-
-<html>
 <!doctype html>
+<html>
 <head>
 <title>{{ config.blog_title }} - {{ title }}</title>
+
+<!-- METADATA -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<!-- Description metadata -->
 {% if not description %}
     <meta name="description" content="A dev blog by Christopher Gibson.  Chris' development interests lie in web and graphics programming. " />
 {% else %}
     <meta name="description" content="{{ description }}" />
 {% endif %}
+
+<!-- Rss feed -->
 <link href="{{ url_for('feed') }}" rel="alternate" title="Recent Changes" type="application/atom+xml">
+
+<!-- MathJax script -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,900,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Style Sheets -->
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/code/native.css') }}">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:400italic,400,800,700' rel='stylesheet' type='text/css'>
- -->
-<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,900,400italic' rel='stylesheet' type='text/css'>
+
+<!-- favicon -->
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/icons/favicon.ico') }}" />
+ 
 {% if not config.DEBUG %}
-  <script type="text/javascript">
+<!-- Google Analytics -->
+<script type="text/javascript">
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-28994945-1']);
@@ -33,7 +46,7 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-  </script>
+</script>
 {% endif %}
 </head>
 
@@ -43,6 +56,7 @@
               linkedin="http://www.linkedin.com/in/mrvoxel",
               twitter="http://twitter.com/mrvoxel",
               github="http://github.com/cgibson",
+              gplus="https://plus.google.com/110747303359639697912?rel=author",
               rss=config.SITE_BASE + "/feed") }}
     <div class=title><a href="{{config.SITE_BASE}}"><img src="/static/img/mrvoxelblog.png"/></a></div>
     <!-- <div class=title><a href="{{config.SITE_BASE}}">Mr.<b>Voxel</b></a></div>

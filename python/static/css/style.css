@@ -293,32 +293,51 @@ div.social {
     float: right;
     padding-top: 60px;
     padding-right: 6px;
-    padding-
 }
 
 /**/
-.twitter {
+a.twitter {
+    background-image: url('/static/img/icons/twitter2.png');
+}
+a.github {
+    background-image: url('/static/img/icons/github2.png');
+}
+a.facebook {
+    background-image: url('/static/img/icons/facebook2.png');
+}
+a.linkedin {
+    background-image: url('/static/img/icons/linkedin2.png');
+}
+a.rss {
+    background-image: url('/static/img/icons/rss2.png');
+}
+a.gplus {
+    background-image: url('/static/img/icons/google-plus2.png');
+}
+
+a:hover.twitter {
     background-image: url('/static/img/icons/twitter.png');
 }
-.github {
+a:hover.github {
     background-image: url('/static/img/icons/github.png');
 }
-
-.facebook {
+a:hover.facebook {
     background-image: url('/static/img/icons/facebook.png');
 }
-
-.linkedin {
+a:hover.linkedin {
     background-image: url('/static/img/icons/linkedin.png');
 }
-
-.rss {
+a:hover.rss {
     background-image: url('/static/img/icons/rss.png');
+}
+a:hover.gplus {
+    background-image: url('/static/img/icons/google-plus.png');
 }
 
 .social a {
     background-size:32px 32px;
-    padding: 2px;
+    padding: 0px;
+    margin: 2px;
     width: 32px;
     height: 32px;
     display: inline-block;

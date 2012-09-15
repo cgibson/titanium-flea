@@ -1,4 +1,4 @@
-{% macro social(twitter="", facebook="", linkedin="", rss="", github="") %}
+{% macro social(twitter="", facebook="", linkedin="", rss="", github="", gplus="") %}
 <div class=social>
     {% if twitter != "" %}
     
@@ -6,16 +6,20 @@
     {% endif %}
     {% if facebook != "" %}
     <a href="{{ facebook }}" class=facebook></a>
+    {% if gplus != "" %}
+    <a href="{{ gplus }}" class=gplus></a>
+    {% endif %}
     {% endif %}
     {% if linkedin != "" %}
     <a href="{{ linkedin }}" class=linkedin></a>
     {% endif %}
-    {% if rss != "" %}
-    <a href="{{ rss }}" class=rss></a>
-    {% endif %}
     {% if github != "" %}
     <a href="{{ github }}" class=github></a>
     {% endif %}
+    {% if rss != "" %}
+    <a href="{{ rss }}" class=rss></a>
+    {% endif %}
+    
     
 </div>
 {% endmacro %}
