@@ -53,21 +53,19 @@ def teardown_request(exception):
 def show_entries():
     
     #cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
-    Post.by_title.sync(g.db)
-    Post.by_tag.sync(g.db)
-    posts = Post.by_title(g.db)
+    #Post.by_date.sync(g.db)
+    #Post.by_tag.sync(g.db)
+    posts = Post.by_date(g.db, descending=True)
     #results = g.db.view("blog/by_title")
     outPosts = []
-    print posts.rows
     for post in posts:
     #for row in cur.fetchall():
         # skip if not published
-        print post
         if not post["published"]:
             continue
         
         # Create a datetime object from our timestamp.
-        d = iso8601.parse_date( post["timestamp"] )
+        d = iso8601.parse_date( post["date"] )
         """
         months = ["jan", "feb", "mar", "apr",
                   "may", "jun", "jul", "aug", 
@@ -77,14 +75,14 @@ def show_entries():
         post["created_day"] = d.day
         """
         
-        post["date"] = d.strftime("%B %d, %Y")
+        post["date_str"] = d.strftime("%B %d, %Y")
         # Build entry url
         url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
         post["url"] = url
         
         outPosts.append(post)
 
-    return render_template('show_entries.html', entries=outPosts, util=util)
+    return render_template('show_entries.html', entries=outPosts, util=util, title="View Recent Posts")
 
 @_app.route('/feed')
 def feed():
@@ -98,7 +96,6 @@ def feed():
     for post in posts:
     #for row in cur.fetchall():
         # skip if not published
-        print post
         if not post["published"]:
             continue
 
@@ -110,8 +107,8 @@ def feed():
                  content_type="html",
                  author=post.author,
                  url=url,
-                 updated=post.timestamp,
-                 published=post.timestamp
+                 updated=post.date,
+                 published=post.date
                  )
 
     return feed.get_response()
@@ -125,7 +122,7 @@ def single_entry(post_id):
     post = Post.load(g.db, post_id)
     
     # Create a datetime object from our timestamp.
-    d = iso8601.parse_date( post["timestamp"] )
+    d = iso8601.parse_date( post["date"] )
     """
     months = ["jan", "feb", "mar", "apr",
               "may", "jun", "jul", "aug", 
@@ -135,18 +132,21 @@ def single_entry(post_id):
     post["created_day"] = d.day
     """
     
-    post["date"] = d.strftime("%B %d, %Y")
+    post["date_str"] = d.strftime("%B %d, %Y")
     
     # Build entry url
     url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
     post["url"] = url
-        
-    return render_template('single_entry.html', entry=post, util=util)
+    
+    description = None
+    if "description" in post:
+        description = post["description"]
+
+    return render_template('single_entry.html', entry=post, util=util, title=post["title"], description=description)
 
 
 @_app.route('/t/<tagname>')
 def tag_entries(tagname):
-    Post.by_tag.sync(g.db)
     
     # We're sure we're only getting one value here
     results = Post.by_tag(g.db, key=tagname)
@@ -162,7 +162,7 @@ def tag_entries(tagname):
                 continue
             
             # Create a datetime object from our timestamp.
-            d = iso8601.parse_date( post["timestamp"] )
+            d = iso8601.parse_date( post["date"] )
             """
             months = ["jan", "feb", "mar", "apr",
                       "may", "jun", "jul", "aug", 
@@ -171,20 +171,19 @@ def tag_entries(tagname):
             post["created_month"] = months[d.month - 1]
             post["created_day"] = d.day
             """
-            post["date"] = d.strftime("%B %d, %Y")
+            post["date_str"] = d.strftime("%B %d, %Y")
             
             # Build entry url
             url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
             post["url"] = url
             outPosts.append(post)
     
-    return render_template('show_entries.html', entries=outPosts, selected_tag=tagname, util=util)
+    return render_template('show_entries.html', entries=outPosts, selected_tag=tagname, util=util, title="Sort by Tag - %s" % tagname)
 
 
 
 @_app.route('/c/<category>')
 def category_entries(category):
-    Post.by_cat.sync(g.db)
     
     # We're sure we're only getting one value here
     results = Post.by_cat(g.db, key=category)
@@ -200,7 +199,7 @@ def category_entries(category):
                 continue
             
             # Create a datetime object from our timestamp.
-            d = iso8601.parse_date( post["timestamp"] )
+            d = iso8601.parse_date( post["date"] )
             """
             months = ["jan", "feb", "mar", "apr",
                       "may", "jun", "jul", "aug", 
@@ -209,14 +208,14 @@ def category_entries(category):
             post["created_month"] = months[d.month - 1]
             post["created_day"] = d.day
             """
-            post["date"] = d.strftime("%B %d, %Y")
+            post["date_str"] = d.strftime("%B %d, %Y")
             
             # Build entry url
             url = "%s/p/%s" % (_app.config["SITE_BASE"], post["_id"])
             post["url"] = url
             outPosts.append(post)
     
-    return render_template('show_entries.html', entries=outPosts, selected_cat=category, util=util)
+    return render_template('show_entries.html', entries=outPosts, selected_cat=category, util=util, title="Sort by Category - %s" % category)
 
 
 

@@ -1,4 +1,4 @@
-{% macro social(twitter="", facebook="", linkedin="", rss="") %}
+{% macro social(twitter="", facebook="", linkedin="", rss="", github="") %}
 <div class=social>
     {% if twitter != "" %}
     
@@ -12,6 +12,9 @@
     {% endif %}
     {% if rss != "" %}
     <a href="{{ rss }}" class=rss></a>
+    {% endif %}
+    {% if github != "" %}
+    <a href="{{ github }}" class=github></a>
     {% endif %}
     
 </div>

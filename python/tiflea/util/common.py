@@ -15,16 +15,14 @@ def getRecentEntries():
     posts = Post.by_title(g.db)
     #results = g.db.view("blog/by_title")
     outPosts = []
-    print posts.rows
     for post in posts:
     #for row in cur.fetchall():
         # skip if not published
-        print post
         if not post["published"]:
             continue
         
         # Create a datetime object from our timestamp.
-        d = iso8601.parse_date( post["timestamp"] )
+        d = iso8601.parse_date( post["date"] )
         
         months = ["jan", "feb", "mar", "apr",
                   "may", "jun", "jul", "aug", 

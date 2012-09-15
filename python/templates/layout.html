@@ -1,9 +1,17 @@
 {% from '_helpers.html' import social with context %}
 {% from '_helpers.html' import sidebar with context %}
 
+<html>
 <!doctype html>
 <head>
-<title>{{ config.SITE_NAME }} - View Entries</title>
+<title>{{ config.blog_title }} - {{ title }}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+{% if not description %}
+    <meta name="description" content="A dev blog by Christopher Gibson.  Chris' development interests lie in web and graphics programming. " />
+{% else %}
+    <meta name="description" content="{{ description }}" />
+{% endif %}
 <link href="{{ url_for('feed') }}" rel="alternate" title="Recent Changes" type="application/atom+xml">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/code/native.css') }}">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
@@ -34,6 +42,7 @@
     {{ social(facebook="https://www.facebook.com/mrvoxel",
               linkedin="http://www.linkedin.com/in/mrvoxel",
               twitter="http://twitter.com/mrvoxel",
+              github="http://github.com/cgibson",
               rss=config.SITE_BASE + "/feed") }}
     <div class=title><a href="{{config.SITE_BASE}}"><img src="/static/img/mrvoxelblog.png"/></a></div>
     <!-- <div class=title><a href="{{config.SITE_BASE}}">Mr.<b>Voxel</b></a></div>
@@ -59,3 +68,4 @@
     
     <div class=copyright>Copyright 2012 Christopher J. Gibson</div>
 </div>
+</html>

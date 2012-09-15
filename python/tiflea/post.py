@@ -10,7 +10,7 @@ import datetime
 from couchdb.mapping import DateTimeField, ListField, TextField, BooleanField, Document, ViewField
 
 class Post(Document):
-    timestamp = DateTimeField()
+    date = DateTimeField(default=datetime.datetime.now())
     tags = ListField( TextField() )
     markdown = TextField()
     html = TextField()
@@ -18,8 +18,8 @@ class Post(Document):
     author = TextField()
     published = BooleanField()
     title = TextField()
-    _id = TextField()
-    #_rev = TextField()
+    preview = TextField(default=None)
+    description = TextField(default=None)
     
     
     @classmethod
@@ -81,9 +81,9 @@ class Post(Document):
                 
     
     @ViewField.define('posts')
-    def by_timestamp(doc):
-        if "timestamp" in doc:
-            yield doc["timestamp"], doc
+    def by_date(doc):
+        if "date" in doc:
+            yield doc["date"], doc
             
     @ViewField.define('posts')
     def by_title(doc):

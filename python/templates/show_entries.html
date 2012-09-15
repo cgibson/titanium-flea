@@ -10,12 +10,17 @@
         <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
 	    <div class=metadata>
 	    <a href="{{ entry.url }}#disqus_thread">0 Comments</a> - 
-	    posted on {{entry.date}}
+	    posted on {{entry.date_str}}
 	    under 
 	    <a class="category" href="{{ config.SITE_BASE }}/c/{{entry.category}}">{{entry.category}}</a>
 	    </div>
         <hr>
-        {{ entry.html|safe }}
+        {% if entry.preview %}
+            {{ entry.preview|safe }}
+            <div class="more"><a href="{{ entry.url }}">&lt;Read More&gt;</a></div>
+        {% else %}
+            {{ entry.html|safe }}
+        {% endif %}
         
         <div class=tagmetadata>
 	    {% for tag in entry.tags %}

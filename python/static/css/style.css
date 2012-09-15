@@ -87,7 +87,7 @@ strong {
 }
 
 .topbar {
-    padding: 0 20px 0 20px;
+    /*padding: 0 20px 0 20px;*/
     height: 100px;
 }
 
@@ -284,33 +284,36 @@ h2 {
 /* SOCIAL ------------------------------------------------*/
 
 div.social {
-    height: 75px;
+    height: 36px;
     float: right;
-    padding-top: 25px;
+    padding-top: 60px;
+    padding-right: 6px;
+    padding-
 }
 
 /**/
 .twitter {
-    background-image: url('/static/img/tw_icon.png');
+    background-image: url('/static/img/icons/twitter.png');
+}
+.github {
+    background-image: url('/static/img/icons/github.png');
 }
 
 .facebook {
-    background-image: url('/static/img/fb_icon.png');
+    background-image: url('/static/img/icons/facebook.png');
 }
 
 .linkedin {
-    background-image: url('/static/img/lin_icon.png');
+    background-image: url('/static/img/icons/linkedin.png');
 }
 
 .rss {
-    background-image: url('/static/img/rss_icon.png');
+    background-image: url('/static/img/icons/rss.png');
 }
 
 .social a {
-    background-size:28px 28px;
-    /*border: 2px solid #557086;
-    border-radius: 25px;*/
-    padding: 5px;
+    background-size:32px 32px;
+    padding: 2px;
     width: 32px;
     height: 32px;
     display: inline-block;
@@ -369,6 +372,11 @@ div.social {
     font-size: 0.8em;
     color: #888888;
     margin: 5px 5px 46px 5px;
+}
+
+.more {
+	text-align: right;
+	font-size: 0.9em;
 }
 
 
