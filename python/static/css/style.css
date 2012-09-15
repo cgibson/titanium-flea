@@ -244,6 +244,11 @@ img.rightist {
 
 /* HEADERS -----------------------------------------------*/
 
+.search {
+	/*float: right;
+	width: 300px;*/
+}
+
 .posttitle, h1, h2, h3, h4, h5 {
     margin-bottom: 24px;
     padding: 0;

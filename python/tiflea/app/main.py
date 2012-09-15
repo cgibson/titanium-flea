@@ -35,6 +35,14 @@ def connect_db(db_name):
     return couch[db_name]
 
 
+db = connect_db(_app.config["DB_NAME"])
+settings = blogsettings.loadSettings(db)
+for k,v in settings.iteritems():
+    if k[0] == "_":
+        continue
+    _app.config[k] = v
+
+
 @_app.before_request
 def before_request():
     """Make sure we are connected to the database each request."""
@@ -51,6 +59,8 @@ def teardown_request(exception):
 
 @_app.route('/')
 def show_entries():
+    
+    print _app.config["blog_title"]
     
     #cur = g.db.execute('select id, title, urltitle, html, author, created, published from entries order by id desc')
     #Post.by_date.sync(g.db)
@@ -90,7 +100,6 @@ def feed():
     feed = AtomFeed('Mr.Voxel Articles',
                     feed_url=request.url, url=request.url_root)
 
-    Post.by_title.sync(g.db)
     posts = Post.by_title(g.db)
 
     for post in posts:
@@ -226,13 +235,6 @@ def runServer():
 
 
 if __name__ == '__main__':
-    
-    db = connect_db(_app.config["DB_NAME"])
-    settings = blogsettings.loadSettings(db)
-    for k,v in settings.iteritems():
-        if k[0] == "_":
-            continue
-        _app.config[k] = v
     
     if _app.config['DEBUG']:
         from werkzeug.wsgi import SharedDataMiddleware
