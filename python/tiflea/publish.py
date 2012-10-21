@@ -69,9 +69,10 @@ def publish(post_meta):
     else:
         
         post = Post.create(**post_meta)
+        print post["_id"]
         post.store(db)
-        
-    return post._id
+        print post["_id"]
+    return post["_id"]
         
 
 if __name__ == '__main__':

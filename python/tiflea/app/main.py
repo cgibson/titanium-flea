@@ -100,7 +100,7 @@ def feed():
     feed = AtomFeed('Mr.Voxel Articles',
                     feed_url=request.url, url=request.url_root)
 
-    posts = Post.by_title(g.db)
+    posts = Post.by_date(g.db, descending=True)
 
     for post in posts:
     #for row in cur.fetchall():

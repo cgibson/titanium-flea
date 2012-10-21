@@ -290,9 +290,12 @@ h2 {
 
 div.social {
     height: 36px;
-    float: right;
-    padding-top: 60px;
-    padding-right: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div.social a{
+    border: none;
 }
 
 /**/
@@ -381,7 +384,7 @@ a:hover.gplus {
 }
 
 .sidebar a {
-    font-size: 11pt;
+    font-size: 10pt;
 }
 
 .metadata {

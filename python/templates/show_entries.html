@@ -21,14 +21,6 @@
         {% else %}
             {{ entry.html|safe }}
         {% endif %}
-        
-        <div class=tagmetadata>
-	    {% for tag in entry.tags %}
-	        <a class=tag href="{{ config.SITE_BASE }}/t/{{tag}}">{{ tag }}</a>
-	    {% else %}
-	        <a class=graytag href="#">None</a>
-	    {% endfor %}
-	    </div>
     </div>
     {% else %}
         <em>Unbelievable.  No entries here so far</em>

@@ -27,6 +27,20 @@
 
 {% macro sidebar() %}
 <div class=sidebar>
+    <h2>Who Am I?</h2>
+    <p>By day, Christopher acts his part as a Technical Director for Dreamworks Animation.  
+    Creator of many tools, proficient in script-fu and experienced in his debuggery.</p>
+    
+    <p>By night, he becomes Mr Voxel.  Gamer, writer, lover of horrors and sci-fi, and dabbler
+    in various side projects.  This site acts as the vent for many of the latter category.</p>
+    
+    {{ social(facebook="https://www.facebook.com/mrvoxel",
+          linkedin="http://www.linkedin.com/in/mrvoxel",
+          twitter="http://twitter.com/mrvoxel",
+          github="http://github.com/cgibson",
+          gplus="https://plus.google.com/110747303359639697912?rel=author",
+          rss=config.SITE_BASE + "/feed") }}
+              
     <h2>Recent</h2>
     <ul>
     {% for entry in util.getRecentEntries() %}

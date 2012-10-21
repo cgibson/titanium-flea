@@ -37,11 +37,14 @@ class Post(Document):
         
         values["_id"] = Post.url_friendly_text(values["title"])
         
+        print values["_id"]
+        
         if not "timestamp" in values:
             values["timestamp"] = datetime.datetime.now()
         
-        
-        return cls(**values)
+        classobj = cls(**values)
+        classobj["_id"] = Post.url_friendly_text(values["title"])
+        return classobj
     
     """
     @classmethod

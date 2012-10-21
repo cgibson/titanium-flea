@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
+
+
+<div class=page>
 <div class=section>
 {% if entry %}
     <h1>{{ entry.title }}</h1>
@@ -38,6 +41,7 @@
 {% else %}
     Whoops!  No blog post by that title!
 {% endif %}
+</div>
 </div>
 
 {% endblock %}

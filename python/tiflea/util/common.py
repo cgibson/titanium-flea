@@ -12,7 +12,7 @@ def helloWorld():
     return "Hello, World!"
 
 def getRecentEntries():
-    posts = Post.by_title(g.db)
+    posts = Post.by_date(g.db, limit=5, descending=True)
     #results = g.db.view("blog/by_title")
     outPosts = []
     for post in posts:
