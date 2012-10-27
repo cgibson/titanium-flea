@@ -195,6 +195,7 @@ strong {
 }
 
 .exclamation {
+	
     width: 32px;
     height: 32px;
     background-image: url("/static/img/alert_icon.png");
