@@ -25,7 +25,8 @@ strong {
 .contents {
     margin: 0 auto;
     width: 960px;
-    background-image: url('/static/img/title_bg2.jpg');
+    background-image: url('/static/img/bg_vox_repeat.jpg');
+    background-position: right top;
     background-repeat: repeat-x;
     z-index: 1;
     
@@ -87,8 +88,17 @@ strong {
 }
 
 .topbar {
-    /*padding: 0 20px 0 20px;*/
+    padding: 0px;
     height: 100px;
+    
+    
+    -webkit-border-top-right-radius: 20px;
+    -webkit-border-top-left-radius: 20px;
+    -moz-border-radius-topright: 20px;
+    -moz-border-radius-topleft: 20px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+
 }
 
 /*.date {
@@ -136,9 +146,10 @@ strong {
 }
 
 .title, .title a {
+	height: 85px;
     text-decoration: none !important;
     font-size: 52px;
-    /*margin: 0px 0 10px 0;*/
+    margin: 0px;
     padding: 15px 0 0 20px;
     /*color: #113344 !important;*/
     color: white !important;
