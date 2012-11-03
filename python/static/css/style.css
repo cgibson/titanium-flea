@@ -150,7 +150,7 @@ strong {
     text-decoration: none !important;
     font-size: 52px;
     margin: 0px;
-    padding: 15px 0 0 20px;
+    padding: 10px 0 0 20px;
     /*color: #113344 !important;*/
     color: white !important;
     font-weight: 400;
@@ -166,14 +166,13 @@ strong {
 .subtitle {
     max-width: 340px;
     text-align: right;
-    color: #fff;
-    color: #ccc;
-    text-shadow: #335 0.1em 0.1em 0.1em;
+    color: #aac;
+    text-shadow: #224 0.2em 0.2em 0.2em;
     font-style: italic;
     /*text-transform:uppercase;*/
     margin-top: -15px;
-    font-size: 18px;
-    margin-left: 30px;
+    font-size: 16px;
+    margin-left: 52px;
 }
 
 
